@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake Water Gun | साँप पानी बंदूक</title>
+  <meta name="description" content="Play the classic Snake, Water, Gun game in Hindi or English. Fun for kids and grown-ups!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Noto+Sans+Devanagari:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="galaxy">
+  <div class="bg-orbs"><span></span><span></span><span></span></div>
+
+  <!-- TOP TOOLBAR (always visible) -->
+  <nav class="toolbar">
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button id="lang-en" data-lang="en" class="active">English</button>
+      <button id="lang-hi" data-lang="hi">हिन्दी</button>
+    </div>
+    <div class="tools">
+      <button id="theme-btn" class="icon-btn" data-i18n-title="tipTheme" title="Theme">🎨</button>
+      <button id="sound-btn" class="icon-btn" data-i18n-title="tipSound" title="Sound">🔊</button>
+      <button id="voice-btn" class="icon-btn" data-i18n-title="tipVoice" title="Read aloud">🗣️</button>
+      <button id="help-btn" class="icon-btn" data-i18n-title="tipHelp" title="How to play">❓</button>
+    </div>
+  </nav>
+
+  <main class="app">
+    <!-- START SCREEN -->
+    <section id="start-screen" class="card screen active">
+      <h1 class="title">🐍 <span data-i18n="title">Snake Water Gun</span> 🔫</h1>
+      <p class="subtitle" data-i18n="subtitle">The classic childhood game!</p>
+
+      <div class="mascot">
+        <div class="mascot-face">🦉</div>
+        <div class="bubble" data-i18n="welcomeMascot">Hoot hoot! I am Chiku. Let's play!</div>
+      </div>
+
+      <label class="field-label" for="name-input" data-i18n="yourName">Your name</label>
+      <input id="name-input" type="text" maxlength="14" autocomplete="off" data-i18n-ph="namePh" placeholder="Type your name" />
+
+      <div class="field-label" data-i18n="pickHero">Pick your hero</div>
+      <div id="heroes" class="chips heroes"></div>
+
+      <div class="field-label" data-i18n="level">Level</div>
+      <div id="levels" class="chips levels">
+        <button class="chip" data-level="easy"><span>🐣</span><b data-i18n="lvlEasy">Little Champ</b><small data-i18n="lvlEasyD">Computer goes easy</small></button>
+        <button class="chip active" data-level="normal"><span>🙂</span><b data-i18n="lvlNormal">Normal</b><small data-i18n="lvlNormalD">Fair game</small></button>
+        <button class="chip" data-level="pro"><span>😎</span><b data-i18n="lvlPro">Pro</b><small data-i18n="lvlProD">Computer is smart</small></button>
+      </div>
+
+      <label class="field-label" for="rounds" data-i18n="matchLen">Match length</label>
+      <select id="rounds">
+        <option value="0" data-i18n="endless">Endless</option>
+        <option value="3" data-i18n="bo3">Best of 3</option>
+        <option value="5" data-i18n="bo5" selected>Best of 5</option>
+        <option value="7" data-i18n="bo7">Best of 7</option>
+      </select>
+
+      <button id="start-btn" class="btn primary" data-i18n="startBtn">Start Game!</button>
+      <button id="howto-btn" class="btn ghost" data-i18n="howBtn">How to play?</button>
+      <p class="hint"><span data-i18n="keysHint">Keyboard keys</span> <kbd>S</kbd> <kbd>W</kbd> <kbd>G</kbd></p>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="game-screen" class="card screen">
+      <header class="topbar">
+        <div class="player-tag"><span id="player-avatar">🦁</span> <span id="player-label">Player</span></div>
+        <div class="top-actions">
+          <div class="stars-total">⭐ <b id="stars-total">0</b></div>
+          <button id="hint-btn" class="icon-btn wide" data-i18n="hintBtn">💡 Hint</button>
+          <button id="quit-btn" class="icon-btn" data-i18n-title="tipQuit" title="Quit">✖</button>
+        </div>
+      </header>
+
+      <div class="scoreboard">
+        <div class="score you"><small id="you-name">You</small><strong id="score-you">0</strong></div>
+        <div class="score draw"><small data-i18n="draws">Draws</small><strong id="score-draw">0</strong></div>
+        <div class="score cpu"><small data-i18n="computer">Computer</small><strong id="score-cpu">0</strong></div>
+      </div>
+      <div id="goal" class="goal"></div>
+
+      <div class="arena">
+        <div class="fighter-wrap"><div class="fighter" id="you-hand">❔</div><small id="you-move" class="move-name"></small></div>
+        <div class="vs">VS</div>
+        <div class="fighter-wrap"><div class="fighter" id="cpu-hand">❔</div><small id="cpu-move" class="move-name"></small></div>
+      </div>
+
+      <div id="result" class="result">Choose your weapon!</div>
+      <div id="why" class="why"></div>
+
+      <div class="choices">
+        <button class="choice" data-choice="s"><span>🐍</span><em data-i18n="m_s">Snake</em><kbd>S</kbd></button>
+        <button class="choice" data-choice="w"><span>💧</span><em data-i18n="m_w">Water</em><kbd>W</kbd></button>
+        <button class="choice" data-choice="g"><span>🔫</span><em data-i18n="m_g">Gun</em><kbd>G</kbd></button>
+      </div>
+
+      <div class="rules-strip">
+        <div class="rs-title" data-i18n="remember">Remember the rules</div>
+        <div class="rs-row">
+          <span>🐍 ➜ 💧</span><span>💧 ➜ 🔫</span><span>🔫 ➜ 🐍</span>
+        </div>
+        <small data-i18n="arrowMeans">The arrow means "beats"</small>
+      </div>
+
+      <div class="mascot small">
+        <div class="mascot-face">🦉</div>
+        <div id="mascot-bubble" class="bubble"></div>
+      </div>
+
+      <div class="history-wrap">
+        <h3 data-i18n="recent">Recent rounds</h3>
+        <ul id="history"></ul>
+      </div>
+    </section>
+
+    <!-- END SCREEN -->
+    <section id="end-screen" class="card screen">
+      <div id="end-emoji" class="end-emoji">🏆</div>
+      <h2 id="end-title">You Win!</h2>
+      <p id="end-text" class="subtitle"></p>
+      <div class="best">🔥 <span data-i18n="bestStreak">Best win streak</span>: <b id="best-streak">0</b> &nbsp;·&nbsp; ⭐ <span data-i18n="starsEarned">Stars earned</span>: <b id="stars-earned">0</b></div>
+      <div class="field-label" data-i18n="yourBadges">Your badges</div>
+      <div id="badges" class="badges"></div>
+      <button id="again-btn" class="btn primary" data-i18n="again">Play Again</button>
+      <button id="menu-btn" class="btn ghost" data-i18n="menu">Main Menu</button>
+    </section>
+  </main>
+
+  <!-- HOW TO PLAY MODAL -->
+  <div id="tutorial" class="modal" hidden>
+    <div class="modal-card">
+      <h2 data-i18n="howTitle">How to play</h2>
+      <p class="subtitle" data-i18n="howIntro">Pick one. The computer picks one too. Who wins?</p>
+
+      <div class="rule-card"><div class="rule-anim"><span class="a">🐍</span><span class="arrow">➜</span><span class="b">💧</span></div><p data-i18n="why_s">Snake drinks Water</p></div>
+      <div class="rule-card"><div class="rule-anim"><span class="a">💧</span><span class="arrow">➜</span><span class="b">🔫</span></div><p data-i18n="why_w">Water washes away Gun</p></div>
+      <div class="rule-card"><div class="rule-anim"><span class="a">🔫</span><span class="arrow">➜</span><span class="b">🐍</span></div><p data-i18n="why_g">Gun scares Snake away</p></div>
+
+      <ul class="how-list">
+        <li data-i18n="howSame">Same choice? It is a draw!</li>
+        <li data-i18n="howWin">Win rounds to win the match. Collect ⭐ stars and 🏅 badges!</li>
+        <li data-i18n="howHint">Stuck? Press the 💡 Hint button.</li>
+      </ul>
+      <button id="tutorial-close" class="btn primary" data-i18n="gotIt">Got it!</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <canvas id="confetti"></canvas>
+  <script src="script.js"></script>
+</body>
+</html>
